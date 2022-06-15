@@ -1,4 +1,3 @@
-const UPDATE_BTN = ''
 
 describe('Profile settings page', () => {
     before(() => {

@@ -58,3 +58,27 @@ describe('Articles lisrt is displayed correctly', () => {
     })
   });
 })
+
+describe.only('Liked article', () => {
+    before(() => {
+        cy.successLogin()
+        cy.visit('/')
+        cy.contains('a', 'Global Feed').click()
+    })
+
+    it('Like counter', () => {
+        const LIKE = ('favorite-btn')
+        cy.get(LIKE).first().then(($span) => {
+            const num1 = parseFloat($span.text())
+            console.log(num1, '11111111111')
+
+            cy.get(LIKE).first()
+              .click()
+              .then(() => {
+                const num2 = parseFloat($span.text())
+                console.log(num2, '22222222')
+                expect(num2).to.eq(num1 + 1)
+              })
+          })
+    })
+})
