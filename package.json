@@ -1,16 +1,17 @@
 {
-  "name": "cyproj",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "cy:open": "cypress open"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "cypress": "^10.0.3",
-    "cypress-dotenv": "^2.0.0",
-    "dotenv": "^16.0.1"
-  }
+    "name": "cyproj",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "cy:open": "cypress open"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@faker-js/faker": "^5.5.3",
+        "cypress": "^10.1.0",
+        "cypress-dotenv": "^2.0.0",
+        "dotenv": "^16.0.1"
+    }
 }
