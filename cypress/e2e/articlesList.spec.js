@@ -59,25 +59,29 @@ describe('Articles lisrt is displayed correctly', () => {
   });
 })
 
-describe.only('Liked article', () => {
+
+describe('Liked article', () => {
     before(() => {
         cy.successLogin()
         cy.visit('/')
-        cy.contains('a', 'Global Feed').click()
+        cy.contains('.sidebar a', 'welcome').click()
     })
 
     it('Like counter', () => {
-        const LIKE = ('favorite-btn')
-        cy.get(LIKE).then(($span) => {
-            const num1 = parseFloat($span.text())
-            console.log(num1, '11111111111')
+        cy.get('favorite-btn').first().as('like')
+        cy.get('@like').then(($span) => {
+            const num1 = parseInt($span.text())
 
-            cy.get(LIKE).click({force: true, multiple: true})
-              cy.get(LIKE).first().should(($span) => {
-                const num2 = parseFloat($span.text())
-                console.log(num2, '22222222')
+            cy.get('@like').click()
+            cy.get('@like').should(($span) => {
+                const num2 = parseInt($span.text())
+              
                 expect(num2).to.eq(num1 + 1)
-              })
+            })
           })
+    })
+
+    after(() => {
+        cy.get('favorite-btn').first().click()
     })
 })

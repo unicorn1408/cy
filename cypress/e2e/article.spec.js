@@ -83,7 +83,7 @@ describe('Article page', () => {
   })
 })
 
-describe.only('Edit Acticle', () => {
+describe('Edit Acticle', () => {
   const slug = ''
   before(() => {
     cy.successLogin()
