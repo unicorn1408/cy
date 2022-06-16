@@ -13,9 +13,16 @@ function generateUserName ( ) {
 }
 
 function generateArticle(tagsNumber) {
-  const tags = []
+  let tags = ''
+  console.log(tags)
   for(let i = 1; i <= tagsNumber; i++) {
-    tags.push(faker.random.word())
+    const tag = faker.random.word()
+
+    if(tags === '') {
+      tags = tag
+    } else {
+      tags = tags +', ' + tag
+    }
   }
   return {
     title: faker.random.words(),

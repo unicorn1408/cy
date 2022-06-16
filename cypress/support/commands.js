@@ -53,7 +53,7 @@ Cypress.Commands.add('logout', () => {
     localStorage.removeItem('jwtToken');
   });
 
-  Cypress.Commands.add('createArticle', (params) => {
+Cypress.Commands.add('createArticle', (params) => {
     cy.request({
       method: 'POST',
       url: 'https://api.realworld.io/api/articles',

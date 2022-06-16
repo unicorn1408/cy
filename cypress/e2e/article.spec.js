@@ -54,3 +54,99 @@ describe('Article', () => {
           });
     })
 })
+
+describe('Article page', () => {
+  before(() => {
+    cy.successLogin()
+    cy.visit('/#/editor/');
+    const randomArticle = generateArticle(3)
+    cy.get(TITLE).type(randomArticle.title)
+    cy.get(DESCRIPTION).type(randomArticle.description)
+    cy.get(ARTICLE_BODY).type(randomArticle.body)
+    cy.get(ENTER_TAGS).type(randomArticle.tagList)
+    cy.get(PUBLISH_BTN).click()
+  })
+
+  it('comment can be added', () => {
+    const testtext = 'test comment'
+    cy.get('[placeholder="Write a comment..."]').type(testtext)
+    cy.get('[type="submit"]').click()
+    cy.get('.card-block p').first().contains(testtext)
+
+  })
+
+  it('article can be deleted', () => {
+    cy.successLogin()
+    const deleted = cy.url()
+    cy.contains('button', "Delete Article").click()
+    cy.url().should('eq', Cypress.config('baseUrl')+ '#/')
+  })
+})
+
+describe.only('Edit Acticle', () => {
+  const slug = ''
+  before(() => {
+    cy.successLogin()
+
+    cy.visit('/#/editor/');
+    const randomArticle = generateArticle(3)
+    cy.get(TITLE).type(randomArticle.title)
+    cy.get(DESCRIPTION).type(randomArticle.description)
+    cy.get(ARTICLE_BODY).type(randomArticle.body)
+    cy.get(ENTER_TAGS).type(randomArticle.tagList)
+    cy.get(PUBLISH_BTN).click()
+
+  })
+
+  it('Article Title', () => {
+    cy.contains('a', "Edit Article").click()
+    const randomArticle = generateArticle()
+
+    cy.intercept('PUT', 'https://api.realworld.io/api/articles/**').as('update')
+
+    cy.get(TITLE).clear().type(randomArticle.title)
+    cy.get(PUBLISH_BTN).click()
+
+    cy.wait('@update').then((resp) => {
+      console.log(resp)
+      expect(resp.response.body.article).to.be.an('object')
+      expect(resp.response.statusCode).to.equal(200)
+      cy.contains('[class="banner"]', randomArticle.title)
+    });
+   })
+
+   it('Article Body', () => {
+    cy.successLogin()
+    cy.contains('a', "Edit Article").click()
+    const randomArticle = generateArticle()
+
+    cy.intercept('PUT', 'https://api.realworld.io/api/articles/**').as('update')
+
+    cy.get('[placeholder="Write your article (in markdown)"]').clear().type(randomArticle.body)
+    cy.get(PUBLISH_BTN).click()
+
+    cy.wait('@update').then((resp) => {
+      console.log(resp)
+      expect(resp.response.body.article).to.be.an('object')
+      expect(resp.response.statusCode).to.equal(200)
+      cy.contains('[class="row article-content"]', randomArticle.body)
+    });
+   })
+    
+   it('Delete Article', () => {
+    cy.successLogin()
+    cy.intercept('DELETE', 'https://api.realworld.io/api/articles/**').as('delete')
+
+    cy.contains('button', "Delete Article").click()
+
+    cy.wait('@delete').then(resp => {
+      console.log(resp)
+      // expect(resp.response.body.article).to.be.an('object')
+      expect(resp.response.body.article).to.be.undefined
+      expect(resp.response.statusCode).to.equal(200)  
+      cy.url().should('eq', Cypress.config('baseUrl')+ '#/')
+    })
+   })
+
+})
+

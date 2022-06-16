@@ -68,13 +68,12 @@ describe.only('Liked article', () => {
 
     it('Like counter', () => {
         const LIKE = ('favorite-btn')
-        cy.get(LIKE).first().then(($span) => {
+        cy.get(LIKE).then(($span) => {
             const num1 = parseFloat($span.text())
             console.log(num1, '11111111111')
 
-            cy.get(LIKE).first()
-              .click()
-              .then(() => {
+            cy.get(LIKE).click({force: true, multiple: true})
+              cy.get(LIKE).first().should(($span) => {
                 const num2 = parseFloat($span.text())
                 console.log(num2, '22222222')
                 expect(num2).to.eq(num1 + 1)
